@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "./components/ui/button";
 import { Checkbox } from "./components/ui/checkbox";
 
@@ -6,6 +6,13 @@ function Todolist() {
   const [todos, setTodos] = useState<{ id: number; label: string }[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [labelText, setLabelText] = useState(""); // State for input text
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (showPopup && inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, [showPopup]);
 
   const addTodo = () => {
     if (labelText.trim() !== "") {
@@ -30,6 +37,7 @@ function Todolist() {
 
           <div className="mt-4">
             <input
+              ref={inputRef}
               type="text"
               placeholder="What are you planing Todo?"
               className="w-full p-2 border border-gray-200 rounded-md bg-white"
